@@ -19,7 +19,7 @@ const {
 
 // EJERCICIO 1
 // Implementar la funcion 'exponencial' que recibe un parametro entero 'exp'
-// y retorna una una funcion, nos referiremos a esta ultima como funcion hija,
+// y retorna una funcion, nos referiremos a esta ultima como funcion hija,
 // y a 'exponencial' como la funcion padre, la funcion hija debe de recibir 
 // un parametro y retornar dicho parametro elevado al parametro 'exp' de 
 // la funcion padre original 'exponencial'
@@ -33,7 +33,7 @@ const {
 // < 16
 
 function exponencial(exp) {
-
+    return (arg) => Math.pow(arg, exp)
 }
 
 // ----- Recursión -----
@@ -44,34 +44,44 @@ function exponencial(exp) {
 // que se deben realizar, para llegar al destino de un laberinto dado.
 //
 // Ejemplo: dado el siguiente laberinto:
-// let laberintoExample = { // direccion = ""
-//     N: 'pared',
-//     S: { // direccion = "S"
-//         N: 'pared',
-//         S: 'pared',
-//         E: { // direccion = "SE"
-//             N: 'destino', // direccion = "SEN"
-//             S: 'pared',
-//             E: 'pared',
-//             O: 'pared'
-//         },
-//         O: { // direccion = "SO"
-//             N: 'pared',
-//             S: 'pared',
-//             E: 'pared',
-//             O: 'pared'
-//         }
-//     },
-//     E: 'pared',
-//     O: 'pared'
-// }
+/*
+let laberintoExample = {  //direccion = ""
+    N: 'pared',
+    S: {  //direccion = "S"
+        N: 'pared',
+        S: 'pared',
+        E: {  //direccion = "SE"
+            N: 'destino',  //direccion = "SEN"
+            S: 'pared',
+            E: 'pared',
+            O: 'pared'
+        },
+        O: {  //direccion = "SO"
+            N: 'pared',
+            S: 'pared',
+            E: 'pared',
+            O: 'pared'
+        }
+    },
+    E: 'pared',
+    O: 'pared'
+}
+*/
 // El retorno de la funcion 'direcciones' debe ser 'SEN', ya que el destino se encuentra
 // haciendo los movimientos SUR->ESTE->NORTE
 // Aclaraciones: el segundo parametro que recibe la funcion ('direccion') puede ser pasado vacio (null)
 
-function direcciones(laberinto) {
-
+let  direcciones = (laberinto, direccion='') => {
+    if (laberinto == null) return ''
+    
+    for (clave in laberinto){
+        if (laberinto[clave] === 'destino') return direccion + clave
+        if(laberinto[clave] !== 'pared') return direcciones(laberinto[clave], direccion + clave)  
+    }
+    return ''
 }
+
+//console.log(direcciones(laberintoExample))
 
 
 // EJERCICIO 3
@@ -87,11 +97,22 @@ function direcciones(laberinto) {
 // deepEqualArrays([0,1,2], [0,1,2,3]) => false
 // deepEqualArrays([0,1,[[0,1,2],1,2]], [0,1,[[0,1,2],1,2]]) => true
 
-function deepEqualArrays(arr1, arr2) {
-
+function deepEqualArrays(arr1, arr2) { 
+    // Si no tiene la misma longitud
+    if (arr1.length !== arr2.length) return false
+    // si tienen anidado otro array
+    for (prop in arr1){
+        if (typeof arr1[prop] === 'object') return deepEqualArrays(arr1[prop], arr2[prop])
+    }
+    // busqueda simple
+    for (let i=0; i< arr1.length; i++){
+        if (arr1[i] !== arr2[i]) return false
+    } 
+      
+    return true // si pasa todas las pruebas 
 }
 
-
+deepEqualArrays([0,1,[[[0,1,2],1,2],1,2]], [0,1,[[[0,1,2],1,2],1,2]]) 
 
 // ----- LinkedList -----
 
@@ -255,7 +276,7 @@ function primalityTest(n) {
 
 
 // EJERCICIO 10
-// Implementa el algoritmo conocido como 'quickSort', que dado un arreglo de elemntos
+// Implementa el algoritmo conocido como 'quickSort', que dado un arreglo de claventos
 // retorn el mismo ordenado de 'mayor a menor!'
 // https://en.wikipedia.org/wiki/Quicksort
 
